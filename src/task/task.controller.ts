@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { title } from 'process';
-import { Task, TaskStatus } from 'src/task.models/task.model';
+import { TaskStatus } from './task.models/task.status.enum';
+
+import { TaskEntity } from './task.entity';
 
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './TaskDTOs/create-task.dto';
@@ -10,12 +11,12 @@ export class TaskController {
     constructor(private taskservice: TaskService){}
 
     @Get()
-    getdata():Task[]{
+    getdata():Promise<TaskEntity[]>{
         return this.taskservice.getTask();
     }
 
     @Post()
-    createTask(@Body() createtaskdto: CreateTaskDto):Task{
+    createTask(@Body() createtaskdto: CreateTaskDto):Promise<TaskEntity>{
             return this.taskservice.createTask(createtaskdto);
 
     }
@@ -28,6 +29,7 @@ export class TaskController {
 
     @Delete('/:id')
     deletetaskbyid(@Param('id') id:string){
+        
         return this.taskservice.deletetask(id)
     }
 
